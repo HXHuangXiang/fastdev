@@ -1,39 +1,30 @@
-# fast-dev
+# fastdev
 
 #### 介绍
-{**以下是码云平台说明，您可以替换此简介**
-码云是 OSCHINA 推出的基于 Git 的代码托管平台（同时支持 SVN）。专为开发者提供稳定、高效、安全的云端软件开发协作平台
-无论是个人、团队、或是企业，都能够用码云实现代码托管、项目管理、协作开发。企业项目请看 [https://gitee.com/enterprises](https://gitee.com/enterprises)}
 
-#### 软件架构
-软件架构说明
-
-
-#### 安装教程
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
 
 #### 使用说明
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+vm 可用属性  
+>使用如: ${table.tableName}/${table.cols}...
 
-#### 参与贡献
+* tableName: 表名
+* tableRemark: 表备注
+* tableNameAlias: 表别名/缩写. 如 table_detail td
+* tableDot: 表名转换为带点. 如 table_detail table.detail
+* tableTilt: 表名转换为带斜杠. 如 table_detail table/detail
+* tableHump: 表名驼峰首字母小写. 如 table_detail tableDetail
+* tableHumpBig: 表名驼峰首字母大写. 如 table_detail TableDetail
+* tableKeyword: 上述字段转 map
+* cols: 表字段列表
+    * colName: 字段名称
+    * colType: 字段数据库类型
+    * colRemark: 字段注释
+    * colNameHump: 字段驼峰
+    * colNameHumpBig: 字段驼峰首字母大写
+    * colTypeJava: 字段类型转 java 类型
 
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
 
 
-#### 码云特技
 
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  码云官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解码云上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是码云最有价值开源项目，是码云综合评定出的优秀开源项目
-5.  码云官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  码云封面人物是一档用来展示码云会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+

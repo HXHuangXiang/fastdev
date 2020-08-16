@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- scan="true"表示配置文件发生改变时自动更新,scanPeriod表示多久扫描一次配置文件看是否更新 debug="true"会打印logback内部的日志信息，查看运行状态 -->
+<configuration scan="true" scanPeriod="60 seconds" debug="true">
+	<property name="LOG_HOME" value="log" />
+	<!-- 日志文件保存路径 -->
+	<property name="filePath" value="${LOG_HOME}/fastdev.%d{yyyy-MM-dd}.log" />
+	<!-- 日志打印规则 -->
+	<property name="consolePattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%21thread] [%3line] %-5level %logger{5} - %msg%n" />
+	
+	<!-- 控制台输出日志 -->
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>${consolePattern}</pattern>
+		</encoder>
+	</appender>
+	<!-- 输出到文件 -->
+	<appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${filePath}</fileNamePattern>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${consolePattern}</pattern>
+		</encoder>
+	</appender>
+	<root level="INFO">
+		<appender-ref ref="console" />
+		<appender-ref ref="file" />
+	</root>
+</configuration>

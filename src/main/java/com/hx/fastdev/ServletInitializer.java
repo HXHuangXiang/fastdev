@@ -1,4 +1,4 @@
-package com.hx.tools.fastdev;
+package com.hx.fastdev;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;

@@ -37,8 +37,22 @@ public class GenerateCodeUtils {
 	private static TableGenerateI tableGenerate = new TableGenerateDefault();
 	private final static DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
 	public static void main(String[] args) {
+		cliDataGenerateCode();
+	}
+	/**
+	 * 根据剪切板创建表内容生成代码
+	 *     vm 模板路径及保存位置请在配置文件配置
+	 * <pre>
+	 * @author hx
+	 * @version 创建时间：2020年8月18日  下午10:10:52
+	 * @param args
+	 * @return
+	 * </pre>
+	 */
+	public static String cliDataGenerateCode() {
 		String data = CliUtils.getCliDataString(true);
-		generateCode(data);
+		String savePath = generateCode(data);
+		return savePath;
 	}
 	/**
 	 * 根据创建表内容生成代码
@@ -60,20 +74,20 @@ public class GenerateCodeUtils {
 		
 		String nowDateStr = DATE_FORMAT.format(new Date());
 		String author = PropertiesUtils.getConfigString("generate.code.author");
+		
+		Properties pro = new Properties();
+		pro.setProperty(Velocity.OUTPUT_ENCODING, "UTF-8");
+		pro.setProperty(Velocity.INPUT_ENCODING, "UTF-8");
+		pro.setProperty(Velocity.FILE_RESOURCE_LOADER_PATH, "");
+		VelocityContext context = new VelocityContext();
+		context.put("table", table);
+		context.put("author", author);
+		context.put("date", nowDateStr);
+		VelocityEngine ve = new VelocityEngine(pro);
 		for (int i = 0, len = listFiles.size(); i < len; i++) {
 			File vmFile = listFiles.get(i);
 			File saveFile = newFile(vmFile, vmDirFile, savePath, table.getTableKeyword());
 			
-			Properties pro = new Properties();
-			pro.setProperty(Velocity.OUTPUT_ENCODING, "UTF-8");
-			pro.setProperty(Velocity.INPUT_ENCODING, "UTF-8");
-			pro.setProperty(Velocity.FILE_RESOURCE_LOADER_PATH, "");
-			VelocityEngine ve = new VelocityEngine(pro);
-
-			VelocityContext context = new VelocityContext();
-			context.put("table", table);
-			context.put("author", author);
-			context.put("date", nowDateStr);
 			
 			Template t = ve.getTemplate(vmFile.getAbsolutePath(), "UTF-8");
 			
@@ -84,8 +98,6 @@ public class GenerateCodeUtils {
 				t.merge(context, sw);
 			} catch (Exception e) {
 				throw new RuntimeException("写入文件失败. file: " + saveFile.getAbsolutePath(), e);
-			} finally {
-				
 			}
 			log.info("成功生成文件: {}", saveFile.getAbsoluteFile());
 		}

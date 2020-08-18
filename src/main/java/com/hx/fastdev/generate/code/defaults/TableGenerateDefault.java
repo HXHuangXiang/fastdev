@@ -22,7 +22,7 @@ import com.hx.utils.properties.PropertiesUtils;
 public class TableGenerateDefault implements TableGenerateI {
 	final static Logger log = LoggerFactory.getLogger(TableGenerateDefault.class);
 	/** 表*/
-	final static Pattern REG_TABLE = Pattern.compile("CREATE +TABLE +`(?<tableName>.*?)`.*', +(?:PRIMARY KEY \\(`(?<primaryKeyCol>\\w*)`\\))?.* COMMENT *= *'(?<tableRemark>.*?)'");
+	final static Pattern REG_TABLE = Pattern.compile("CREATE +TABLE +`(?<tableName>.*?)`.*, +(?:PRIMARY KEY \\(`(?<primaryKeyCol>.*?)`\\)),.* COMMENT *= *'(?<tableRemark>.*?)'");
 	/** 字段*/
 	final static Pattern REG_COL = Pattern.compile("`(?<colName>.*?)` +(?<colType>.*?)(?:\\(| ).*COMMENT +'(?<colRemark>.*)'");
 	
@@ -43,7 +43,7 @@ public class TableGenerateDefault implements TableGenerateI {
 		log.info("原始表信息: {}. 去除换行后的数据: {}", tableStr, tableStrTemp);
 		Matcher matcher = REG_TABLE.matcher(tableStrTemp);
 		if (!matcher.find()) {
-			throw new RuntimeException("表名或备注不存在. 请添加");
+			throw new RuntimeException("表名/主键/备注不存在. 请添加");
 		}
 		
 		String primaryKeyCol = matcher.group("primaryKeyCol");

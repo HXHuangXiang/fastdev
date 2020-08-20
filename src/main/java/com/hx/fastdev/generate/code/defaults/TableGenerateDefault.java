@@ -22,7 +22,7 @@ import com.hx.utils.properties.PropertiesUtils;
 public class TableGenerateDefault implements TableGenerateI {
 	final static Logger log = LoggerFactory.getLogger(TableGenerateDefault.class);
 	/** 表*/
-	final static Pattern REG_TABLE = Pattern.compile("CREATE +TABLE +`(?<tableName>.*?)`.*, +(?:PRIMARY KEY \\(`(?<primaryKeyCol>.*?)`\\)),.* COMMENT *= *'(?<tableRemark>.*?)'");
+	final static Pattern REG_TABLE = Pattern.compile("CREATE +TABLE +`(?<tableName>.*?)`.*, +(?:PRIMARY KEY \\(`(?<primaryKeyCol>.*?)`\\)).* COMMENT *= *'(?<tableRemark>.*?)'");
 	/** 字段*/
 	final static Pattern REG_COL = Pattern.compile("`(?<colName>.*?)` +(?<colType>.*?)(?:\\(| ).*COMMENT +'(?<colRemark>.*)'");
 	

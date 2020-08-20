@@ -71,7 +71,9 @@ public class GenerateCodeUtils {
 		final File vmDirFile = new File(vmTempPath);
 		List<File> listFiles = new ArrayList<>();
 		getVMFiles(listFiles, vmDirFile);
-		
+		if (listFiles.isEmpty()) {
+			throw new RuntimeException("未找到生成模板. file: " + vmDirFile.getAbsolutePath());
+		}
 		String nowDateStr = DATE_FORMAT.format(new Date());
 		String author = PropertiesUtils.getConfigString("generate.code.author");
 		
@@ -150,7 +152,7 @@ public class GenerateCodeUtils {
 				return pathname.isDirectory() || pathname.getName().endsWith(".vm");
 			}
 		});
-		if (files.length == 0) {
+		if (null == files || files.length == 0) {
 			return;
 		}
 		for (int i = 0; i < files.length; i++) {

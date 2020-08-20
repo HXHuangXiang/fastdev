@@ -1,6 +1,7 @@
 package com.hx.fastdev.generate.uppack;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
@@ -57,9 +58,12 @@ public class CopyFileModel {
 			this.proPathStatics[i] = this.proPaths[i] + mavenProRule + "webapp\\";
 			this.proPathClasss[i] = this.proPaths[i] + "target\\classes\\";
 			
-			String proName = "/" + new File(this.proPaths[i]).getName() + "/";
+			String proName = "";
+			if (len != 1) {
+				proName = "/" + new File(this.proPaths[i]).getName() + "/";
+			}
 			this.proPathRules[i] = proName + mavenProRule;
-			this.savePathStatics[i] = this.savePathStr + (len == 1 ? "" : proName) + PropertiesUtils.getConfigString("generate.uppack.home.path") + '\\';
+			this.savePathStatics[i] = this.savePathStr + proName + PropertiesUtils.getConfigString("generate.uppack.home.path") + '\\';
 			this.savePathClasss[i] = this.savePathStatics[i] + "WEB-INF\\classes\\";
 		}
 	}
@@ -156,6 +160,22 @@ public class CopyFileModel {
 		log.info("生成上线文件. 拷贝: {}. 保存: {}. 初始: {}", sourceFile.getAbsolutePath(), targetFile.getAbsolutePath(), svnPath);
 		try {
 			Files.copy(sourceFile.toPath(), targetFile.toPath());
+			if (sourceFile.getName().endsWith(".class")) {
+				String startName = sourceFile.getName().replaceAll("\\.class$", "") + "$";
+				File[] childFiles = sourceFile.getParentFile().listFiles(new FilenameFilter() {
+					@Override
+					public boolean accept(File dir, String name) {
+						return name.startsWith(startName);
+					}
+				});
+				String targetParent = targetFile.getParent() + "\\";
+				for (int i = 0; i < childFiles.length; i++) {
+					sourceFile = childFiles[i];
+					targetFile = new File(targetParent + sourceFile.getName());
+					log.info("生成上线文件. 拷贝内部类: {}. 保存: {}. 初始: {}", sourceFile.getAbsolutePath(), targetFile.getAbsolutePath(), svnPath);
+					Files.copy(sourceFile.toPath(), targetFile.toPath());
+				}
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

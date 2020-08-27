@@ -78,6 +78,12 @@
 		    <artifactId>svnkit</artifactId>
 		    <version>1.10.1</version>
 		</dependency>
+		<!-- LINUX -->
+		<dependency>
+		    <groupId>com.jcraft</groupId>
+		    <artifactId>jsch</artifactId>
+		    <version>0.1.55</version>
+		</dependency>
 	</dependencies>
 
 	<build>

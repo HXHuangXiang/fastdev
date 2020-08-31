@@ -38,4 +38,8 @@ public class LinuxUploadFileModel {
 		model.serverFile = new FileLinux(serverPath);
 		return model;
 	}
+	@Override
+	public String toString() {
+		return "{\"localFile\":\"" + localFile + "\", \"serverFile\":\"" + serverFile + "\"}";
+	}
 }

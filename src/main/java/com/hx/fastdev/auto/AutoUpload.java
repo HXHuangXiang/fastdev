@@ -7,6 +7,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.hx.fastdev.generate.uppack.UppackUtils;
 import com.hx.utils.linux.FileLinux;
 import com.hx.utils.linux.LinuxI;
@@ -22,12 +24,47 @@ public class AutoUpload {
 		String homePath = PropertiesUtils.getConfigString("generate.uppack.home.path");
 		String[] linuxPaths = PropertiesUtils.getConfigClass("generate.uppack.linux.paths", String[].class);
 		
+		if (proPaths.length != linuxPaths.length) {
+			log.info("自动部署. 项目路径数和服务器路径数不一致终止");
+			return;
+		}
 		for (int i = 0; i < proPaths.length; i++) {
 			String savePath = UppackUtils.cliDataGenerateFiles(proPaths[i]);
-			for (int j = 0; j < linuxPaths.length; j++) {
-				backUpload(new File(savePath + homePath), new FileLinux(linuxPaths[j]));
+			backUpload(new File(savePath + homePath), new FileLinux(linuxPaths[i]));
+		}
+		uploadJar();
+		log.info("自动部署. 上传所有文件完成");
+		LinuxUtils.getLinux().disconn();
+	}
+	/**
+	 * 上传 jar 文件
+	 * <pre>
+	 * @author hx
+	 * @version 创建时间：2020年9月1日  下午10:47:36
+	 * </pre>
+	 */
+	public static void uploadJar() {
+		JSONArray uploadJars = PropertiesUtils.getConfigClass("generate.uppack.upload.jar", JSONArray.class);
+		if (null == uploadJars) {
+			return;
+		}
+		List<LinuxUploadFileModel> linuxUploadFiles = new ArrayList<>();
+		JSONObject uploadJar;
+		String serverPath;
+		LinuxUploadFileModel linuxUploadFile;
+		String[] jarFiles;
+		for (int i = 0; i < uploadJars.size(); i++) {
+			uploadJar = uploadJars.getJSONObject(i);
+			serverPath = uploadJar.getString("serverPath");
+			jarFiles = uploadJar.getObject("jarFiles", String[].class);
+			for (int j = 0; j < jarFiles.length; j++) {
+				linuxUploadFile = LinuxUploadFileModel.newLinuxUploadFileModel(jarFiles[j], serverPath + FileLinux.separatorChar + new File(jarFiles[j]).getName());
+				linuxUploadFiles.add(linuxUploadFile);
 			}
 		}
+		LinuxI linux = LinuxUtils.getLinux();
+		linux.uploadFile(linuxUploadFiles);
+		log.info("自动部署. 上传 jar 完成");
 	}
 	/**
 	 * 备份服务器目录并上传文件

@@ -130,4 +130,15 @@ public class LinuxFile extends LinuxUse implements LinuxI {
 			throw new RuntimeException("备份文件异常. result: " + result);
 		}
 	}
+	/**
+	 * 释放 linux 连接
+	 * <pre>
+	 * @author hx
+	 * @version 创建时间：2020年9月1日  下午10:49:13
+	 * </pre>
+	 */
+	@Override
+	public void disconn() {
+		super.session.disconnect();
+	}
 }

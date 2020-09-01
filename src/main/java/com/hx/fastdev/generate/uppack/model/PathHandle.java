@@ -127,7 +127,7 @@ public class PathHandle {
 			} else {
 				splicePath = splicePath.replaceAll("\\.java$", ".class");
 				proCopyFile = new File(proPathClass + splicePath);
-				saveFilePath = savePathClass + svnPathAfter;
+				saveFilePath = savePathClass + splicePath;
 			}
 			if (!proCopyFile.exists()) {
 				log.info("生成上线文件. 文件不存在. 路径: {}. ", svnPath);

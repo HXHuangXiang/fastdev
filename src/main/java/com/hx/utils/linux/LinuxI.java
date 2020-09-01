@@ -29,4 +29,12 @@ public interface LinuxI {
 	 * </pre>
 	 */
 	void backFile(String path, String... backPath);
+	/**
+	 * 释放 linux 连接
+	 * <pre>
+	 * @author hx
+	 * @version 创建时间：2020年9月1日  下午10:49:13
+	 * </pre>
+	 */
+	void disconn();
 }

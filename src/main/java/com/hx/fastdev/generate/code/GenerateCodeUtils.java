@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import com.hx.fastdev.generate.code.defaults.TableGenerateDefault;
 import com.hx.fastdev.generate.code.model.Table;
 import com.hx.utils.CliUtils;
+import com.hx.utils.StringUtils;
 import com.hx.utils.properties.PropertiesUtils;
 
 /**
@@ -51,8 +52,16 @@ public class GenerateCodeUtils {
 	 */
 	public static String cliDataGenerateCode() {
 		String data = CliUtils.getCliDataString(true);
-		String savePath = generateCode(data);
+		String[] datas = data.split("';");
+		String savePath = getSavePath();
+		for (int i = 0; i < datas.length; i++) {
+			generateCode(datas[i] + "';", savePath);
+		}
 		return savePath;
+	}
+	public static String generateCode(String tableStr) {
+		String savePath = getSavePath();
+		return generateCode(savePath);
 	}
 	/**
 	 * 根据创建表内容生成代码
@@ -64,8 +73,7 @@ public class GenerateCodeUtils {
 	 * @return
 	 * </pre>
 	 */
-	public static String generateCode(String tableStr) {
-		String savePath = getSavePath();
+	public static String generateCode(String tableStr, String savePath) {
 		Table table = tableGenerate.newTable(tableStr);
 		String vmTempPath = PropertiesUtils.getConfigString("generate.code.temp.path");
 		final File vmDirFile = new File(vmTempPath);
